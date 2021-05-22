@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'utilitarios.dart';
 //import 'package:sqflite/sqflite.dart';
 
@@ -13,7 +14,7 @@ class _TelaLogin extends State<TelaLogin> {
   Widget build(BuildContext context) {
     var form = GlobalKey<FormState>();
 
-    var login = TextEditingController();
+    var email = TextEditingController();
     var senha = TextEditingController();
 
     return Scaffold(
@@ -54,9 +55,9 @@ class _TelaLogin extends State<TelaLogin> {
                                     child: Column(
                                       children: <Widget>[
                                         TextFormField(
-                                          controller: login,
+                                          controller: email,
                                           decoration: InputDecoration(
-                                            prefixIcon: Icon(Icons.person, color: Colors.orangeAccent[200], size: 22),
+                                            prefixIcon: Icon(Icons.email, color: Colors.orangeAccent[200], size: 22),
                                             hintText: 'Login',
                                             border: UnderlineInputBorder(
                                                 borderSide: BorderSide(
@@ -110,11 +111,17 @@ class _TelaLogin extends State<TelaLogin> {
                                     child: Text('Entrar'),
                                     onPressed: () async{
                                       if(form.currentState.validate()) {
-                                        await FirebaseFirestore.instance.collection('usuarios')
-                                            .add({
-                                          'login': login.text,
-                                          'senha': senha.text
-                                        });
+                                        try {
+                                          UserCredential user = await FirebaseAuth
+                                              .instance
+                                              .signInWithEmailAndPassword(
+                                              email: email.text,
+                                              password: senha.text);
+                                          print(user);
+                                        }
+                                        catch(e){
+                                          print('Foi encontrado um erro: $e');
+                                        }
                                       }
                                       Navigator.pushNamed(context, '/login');
                                     }
