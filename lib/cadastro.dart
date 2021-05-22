@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'utilitarios.dart';
 
 class TelaCadastro extends StatefulWidget {
@@ -15,7 +16,7 @@ class _TelaCadastro extends State<TelaCadastro> {
     var email = TextEditingController();
     var login = TextEditingController();
     var senha = TextEditingController();
-    print("teste");
+
     return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
@@ -133,6 +134,8 @@ class _TelaCadastro extends State<TelaCadastro> {
                                         'senha': senha.text,
                                         'email': email.text
                                       });
+                                      UserCredential user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email.text, password: senha.text);
+                                      print(user);
                                     }
                                     Navigator.pushNamed(context, '/login');
                                   }

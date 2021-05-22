@@ -123,7 +123,7 @@ class _TelaLogin extends State<TelaLogin> {
                                           print('Foi encontrado um erro: $e');
                                         }
                                       }
-                                      Navigator.pushNamed(context, '/login');
+                                      Navigator.pushNamed(context, '/home');
                                     }
                                 ),
 
