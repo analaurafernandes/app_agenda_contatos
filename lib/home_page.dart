@@ -50,7 +50,8 @@ class _Home extends State<Home> {
             return ListView.builder(
               itemCount: snapshot.data.docs.length,
               itemBuilder:(BuildContext context, int i){
-                var item = Map.of(snapshot.data.docs[i].data());
+                var doc = snapshot.data.docs[i];
+                var item = Map.of(doc.data());
 
                 print(item['nome']);
                 return Container(
@@ -61,15 +62,15 @@ class _Home extends State<Home> {
                   margin: const EdgeInsets.fromLTRB(10, 5, 10, 0),
                   child: ListTile(
                     leading: IconButton(
-                      icon: Icon(Icons.radio_button_unchecked_outlined),
-                      onPressed: () => null,
+                      icon: Icon(Icons.edit_outlined),
+                      onPressed: () => modalCreate(context, 'edit', doc),
                     ),
                     title: Text(item['nome']),
                     subtitle: Text(item['telefone'] + '\n' + item['email']),
                     trailing: IconButton(
                       icon: Icon(Icons.delete),
                       color: Colors.red[300],
-                      onPressed: () => null,
+                      onPressed: () => doc.reference.update({'status': 'excluido'}),
                     )
                   ),
                 );
@@ -78,7 +79,7 @@ class _Home extends State<Home> {
           },
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => modalCreate(context),
+          onPressed: () => modalCreate(context, 'add', null),
           tooltip: 'Adicionar novo',
           child: Icon(Icons.add),
         ),

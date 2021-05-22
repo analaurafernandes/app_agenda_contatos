@@ -21,7 +21,7 @@ botaoGenerico(texto, BuildContext context, rota){
   );
 }
 
-modalCreate(BuildContext context){
+modalCreate(BuildContext context, String op, QueryDocumentSnapshot<Object> doc){
   var form = GlobalKey<FormState>();
 
   var nome = TextEditingController();
@@ -37,98 +37,101 @@ modalCreate(BuildContext context){
           title: Text('Novo Contato'),
           content: Form(
             key: form,
-            child: Column(
-              children: <Widget>[
-                TextFormField(
-                  controller: nome,
-                  decoration: InputDecoration(
-                    hintText: 'Nome',
-                    border: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Colors.orangeAccent[200]
-                      )
-                    ),
-                  ),
-                  validator: (value){
-                    if(value.isEmpty){
-                      return 'Campo de preenchimento obrigatório';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 10),
-                TextFormField(
-                  controller: telefone,
-                  decoration: InputDecoration(
-                    hintText: 'Telefone',
-                    border: UnderlineInputBorder(
+            child: Container(
+              height: MediaQuery.of(context).size.height/2,
+              child: Column(
+                children: <Widget>[
+                  TextFormField(
+                    controller: nome,
+                    decoration: InputDecoration(
+                      hintText: 'Nome',
+                      border: UnderlineInputBorder(
                         borderSide: BorderSide(
                             color: Colors.orangeAccent[200]
                         )
+                      ),
                     ),
+                    validator: (value){
+                      if(value.isEmpty){
+                        return 'Campo de preenchimento obrigatório';
+                      }
+                      return null;
+                    },
                   ),
-                  validator: (value){
-                    if(value.isEmpty){
-                      return 'Campo de preenchimento obrigatório';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 10),
-                TextFormField(
-                  controller: email,
-                  decoration: InputDecoration(
-                    hintText: 'E-mail',
-                    border: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Colors.orangeAccent[200]
-                        )
+                  SizedBox(height: 10),
+                  TextFormField(
+                    controller: telefone,
+                    decoration: InputDecoration(
+                      hintText: 'Telefone',
+                      border: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Colors.orangeAccent[200]
+                          )
+                      ),
                     ),
+                    validator: (value){
+                      if(value.isEmpty){
+                        return 'Campo de preenchimento obrigatório';
+                      }
+                      return null;
+                    },
                   ),
-                  validator: (value){
-                    if(value.isEmpty){
-                      return 'Campo de preenchimento obrigatório';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 10),
-                TextFormField(
-                  controller: endereco,
-                  decoration: InputDecoration(
-                    hintText: 'Endereço',
-                    border: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Colors.orangeAccent[200]
-                        )
+                  SizedBox(height: 10),
+                  TextFormField(
+                    controller: email,
+                    decoration: InputDecoration(
+                      hintText: 'E-mail',
+                      border: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Colors.orangeAccent[200]
+                          )
+                      ),
                     ),
+                    validator: (value){
+                      if(value.isEmpty){
+                        return 'Campo de preenchimento obrigatório';
+                      }
+                      return null;
+                    },
                   ),
-                  validator: (value){
-                    if(value.isEmpty){
-                      return 'Campo de preenchimento obrigatório';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 10),
-                TextFormField(
-                  controller: cep,
-                  decoration: InputDecoration(
-                    hintText: 'CEP',
-                    border: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Colors.orangeAccent[200]
-                        )
+                  SizedBox(height: 10),
+                  TextFormField(
+                    controller: endereco,
+                    decoration: InputDecoration(
+                      hintText: 'Endereço',
+                      border: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Colors.orangeAccent[200]
+                          )
+                      ),
                     ),
+                    validator: (value){
+                      if(value.isEmpty){
+                        return 'Campo de preenchimento obrigatório';
+                      }
+                      return null;
+                    },
                   ),
-                  validator: (value){
-                    if(value.isEmpty){
-                      return 'Campo de preenchimento obrigatório';
-                    }
-                    return null;
-                  },
-                ),
-              ],
+                  SizedBox(height: 10),
+                  TextFormField(
+                    controller: cep,
+                    decoration: InputDecoration(
+                      hintText: 'CEP',
+                      border: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Colors.orangeAccent[200]
+                          )
+                      ),
+                    ),
+                    validator: (value){
+                      if(value.isEmpty){
+                        return 'Campo de preenchimento obrigatório';
+                      }
+                      return null;
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
           actions: <Widget>[
@@ -140,17 +143,32 @@ modalCreate(BuildContext context){
                 child: Text('Cancelar')
             ),
             TextButton(
-                onPressed: (){
-                  if(form.currentState.validate()){
-                    FirebaseFirestore.instance.collection('contatos').add({
-                      'cep':      cep.text,
-                      'nome':     nome.text,
-                      'email':    email.text,
-                      'endereco': endereco.text,
-                      'telefone': telefone.text,
-                      'status':   'ativo'
-                    });
+                onPressed: () async{
+                  if(op == 'edit'){
+                    if(form.currentState.validate())
+                      doc.reference.update({
+                        'cep': cep.text,
+                        'nome': nome.text,
+                        'email': email.text,
+                        'endereco': endereco.text,
+                        'telefone': telefone.text,
+                        'status': 'ativo'
+                      });
                   }
+                  else{
+                    if(form.currentState.validate()) {
+                      await FirebaseFirestore.instance.collection('contatos')
+                          .add({
+                        'cep': cep.text,
+                        'nome': nome.text,
+                        'email': email.text,
+                        'endereco': endereco.text,
+                        'telefone': telefone.text,
+                        'status': 'ativo'
+                      });
+                    }
+                  }
+                  Navigator.of(context).pop();
                 },
                 style: TextButton.styleFrom(
                   primary: Colors.orangeAccent[200],
