@@ -1,6 +1,8 @@
+import 'package:agenda_contatos/usuarios.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'usuarios.dart';
 import 'utilitarios.dart';
 //import 'package:sqflite/sqflite.dart';
 
@@ -24,12 +26,26 @@ class _TelaLogin extends State<TelaLogin> {
           elevation: 0,
           iconTheme: IconThemeData(color: Colors.orangeAccent[200]),
           actions: <Widget>[
-            PopupMenuButton(itemBuilder: (BuildContext context){
-              return[
-                PopupMenuItem(child: Text('Flutter')),
-                PopupMenuItem(child: Text('Android')),
-              ];
-            })
+            PopupMenuButton(
+              onSelected: (result){
+                print(result);
+                if (result == 0) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Users()),
+                  );
+                }
+              },
+              itemBuilder: (BuildContext context){
+                return [
+                  PopupMenuItem(
+                    child: Text('Usuários'),
+                    value: 0,
+                  ),
+                  //PopupMenuItem(child: Text('Android')),
+                ];
+              }
+            ),
           ],
         ),
         body: new Stack(
@@ -58,7 +74,7 @@ class _TelaLogin extends State<TelaLogin> {
                                           controller: email,
                                           decoration: InputDecoration(
                                             prefixIcon: Icon(Icons.email, color: Colors.orangeAccent[200], size: 22),
-                                            hintText: 'Login',
+                                            hintText: 'E-mail',
                                             border: UnderlineInputBorder(
                                                 borderSide: BorderSide(
                                                     color: Colors.orangeAccent[200]
@@ -117,7 +133,6 @@ class _TelaLogin extends State<TelaLogin> {
                                               .signInWithEmailAndPassword(
                                               email: email.text,
                                               password: senha.text);
-                                          print(user);
                                         }
                                         catch(e){
                                           print('Foi encontrado um erro: $e');

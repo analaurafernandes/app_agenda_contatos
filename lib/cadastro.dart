@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'usuarios.dart';
 import 'utilitarios.dart';
 
 class TelaCadastro extends StatefulWidget {
@@ -24,12 +25,25 @@ class _TelaCadastro extends State<TelaCadastro> {
           elevation: 0,
           iconTheme: IconThemeData(color: Colors.orangeAccent[200]),
           actions: <Widget>[
-            PopupMenuButton(itemBuilder: (BuildContext context){
-              return[
-                PopupMenuItem(child: Text('Flutter')),
-                PopupMenuItem(child: Text('Android')),
-              ];
-            })
+            PopupMenuButton(
+                onSelected: (result){
+                  if (result == 0) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Users()),
+                    );
+                  }
+                },
+                itemBuilder: (BuildContext context){
+                  return [
+                    PopupMenuItem(
+                      child: Text('Usuários'),
+                      value: 0,
+                    ),
+                    //PopupMenuItem(child: Text('Android')),
+                  ];
+                }
+            ),
           ],
         ),
         body: new Stack(
@@ -132,10 +146,10 @@ class _TelaCadastro extends State<TelaCadastro> {
                                           .add({
                                         'login': login.text,
                                         'senha': senha.text,
-                                        'email': email.text
+                                        'email': email.text,
+                                        'status': 'ativo'
                                       });
                                       UserCredential user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email.text, password: senha.text);
-                                      print(user);
                                     }
                                     Navigator.pushNamed(context, '/login');
                                   }

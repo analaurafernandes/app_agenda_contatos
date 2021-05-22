@@ -5,6 +5,7 @@ import 'cadastro.dart';
 import 'home_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'usuarios.dart';
 
 void main() async{
     WidgetsFlutterBinding.ensureInitialized();
@@ -26,10 +27,10 @@ class _MyAppState extends State<MyApp>{
         routes: {
           "/login":     (context) => TelaLogin(),
           "/cadastrar": (context) => TelaCadastro(),
-          "/home": (context) => Home()
-          //"/contas" :   (context) => TelaContas()
+          "/home": (context) => Home(),
+          "/users": (context) => Users()
         },
-        //theme: ThemeData(primaryColor: Colors.deepPurple[200]),
+        theme: ThemeData(primaryColor: Colors.orangeAccent[200]),
         home: HomePage()
     );
   }

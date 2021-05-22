@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'utilitarios.dart';
+import 'usuarios.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 class Home extends StatefulWidget {
@@ -20,12 +21,25 @@ class _Home extends State<Home> {
           elevation: 0,
           iconTheme: IconThemeData(color: Colors.orangeAccent[200]),
           actions: <Widget>[
-            PopupMenuButton(itemBuilder: (BuildContext context){
-              return[
-                PopupMenuItem(child: Text('Flutter')),
-                PopupMenuItem(child: Text('Android')),
-              ];
-            })
+            PopupMenuButton(
+                onSelected: (result){
+                  if (result == 0) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Users()),
+                    );
+                  }
+                },
+                itemBuilder: (BuildContext context){
+                  return [
+                    PopupMenuItem(
+                      child: Text('Usuários'),
+                      value: 0,
+                    ),
+                    //PopupMenuItem(child: Text('Android')),
+                  ];
+                }
+            ),
           ],
         ),
         backgroundColor: Colors.grey[100],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 botaoGenerico(texto, BuildContext context, rota){
   return ElevatedButton(
@@ -184,6 +185,7 @@ modalCreate(BuildContext context, String op, QueryDocumentSnapshot<Object> doc){
 createUser(BuildContext context, String op, QueryDocumentSnapshot<Object> doc){
   var form = GlobalKey<FormState>();
 
+  var email = TextEditingController();
   var login = TextEditingController();
   var senha = TextEditingController();
 
@@ -198,6 +200,24 @@ createUser(BuildContext context, String op, QueryDocumentSnapshot<Object> doc){
               height: MediaQuery.of(context).size.height/3,
               child: Column(
                 children: <Widget>[
+                  TextFormField(
+                    controller: email,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.email, color: Colors.orangeAccent[200], size: 22),
+                      hintText: 'E-mail',
+                      border: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Colors.orangeAccent[200]
+                          )
+                      ),
+                    ),
+                    validator: (value){
+                      if(value.isEmpty){
+                        return 'Campo de preenchimento obrigatório';
+                      }
+                      return null;
+                    },
+                  ),
                   TextFormField(
                     controller: login,
                     decoration: InputDecoration(
@@ -250,13 +270,27 @@ createUser(BuildContext context, String op, QueryDocumentSnapshot<Object> doc){
             ),
             TextButton(
                 onPressed: () async{
-                  if(form.currentState.validate()) {
-                    await FirebaseFirestore.instance.collection('usuarios')
-                        .add({
-                      'login': login.text,
-                      'senha': senha.text
-                    });
+                  if(op == 'edit'){
+                    if(form.currentState.validate())
+                      doc.reference.update({
+                        'email': email.text,
+                        'login': login.text,
+                        'senha': senha.text,
+                        'status': 'ativo'
+                      });
                   }
+                  else {
+                    if (form.currentState.validate()) {
+                      await FirebaseFirestore.instance.collection('usuarios')
+                          .add({
+                        'email': email.text,
+                        'login': login.text,
+                        'senha': senha.text,
+                        'status': 'ativo'
+                      });
+                    }
+                  }
+                  UserCredential user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email.text, password: senha.text);
                   Navigator.of(context).pop();
                 },
                 style: TextButton.styleFrom(
