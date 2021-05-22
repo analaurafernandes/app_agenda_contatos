@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'crud_firebase.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'utilitarios.dart';
 //import 'package:sqflite/sqflite.dart';
 
@@ -9,10 +9,13 @@ class TelaLogin extends StatefulWidget {
 }
 
 class _TelaLogin extends State<TelaLogin> {
-  var login = "";
-  var senha = "";
   @override
   Widget build(BuildContext context) {
+    var form = GlobalKey<FormState>();
+
+    var login = TextEditingController();
+    var senha = TextEditingController();
+
     return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
@@ -44,61 +47,78 @@ class _TelaLogin extends State<TelaLogin> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
-                                TextFormField(
-                                  cursorColor: Colors.orangeAccent[200],
-                                  style: TextStyle(color: Colors.black, decorationColor: Colors.white),
-                                  decoration: InputDecoration(
-                                      prefixIcon: Icon(Icons.person, color: Colors.orangeAccent[200], size: 22),
-                                      enabledBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.orangeAccent[200]
-                                          )
-                                      ),
-                                      labelText: 'Usuário:',
-                                      labelStyle: TextStyle(color: Colors.black, fontSize: 18),
-                                      focusedBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.orangeAccent[200]
-                                          )
-                                      )
-                                  ),
-                                  onChanged: (String input){
-                                    setState(() {
-                                      login = input;
-                                    });
-                                  },
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                  child: TextFormField(
-                                    cursorColor: Colors.orangeAccent[200],
-                                    decoration: InputDecoration(
-                                        prefixIcon: Icon(Icons.lock, color: Colors.orangeAccent[200], size: 22),
-                                        focusColor: Colors.orangeAccent[200],
-                                        enabledBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: Colors.orangeAccent[200]
-                                            )
+                                Form(
+                                  key: form,
+                                  child: Container(
+                                    height: MediaQuery.of(context).size.height/3,
+                                    child: Column(
+                                      children: <Widget>[
+                                        TextFormField(
+                                          controller: login,
+                                          decoration: InputDecoration(
+                                            prefixIcon: Icon(Icons.person, color: Colors.orangeAccent[200], size: 22),
+                                            hintText: 'Login',
+                                            border: UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.orangeAccent[200]
+                                                )
+                                            ),
+                                          ),
+                                          validator: (value){
+                                            if(value.isEmpty){
+                                              return 'Campo de preenchimento obrigatório';
+                                            }
+                                            return null;
+                                          },
                                         ),
-                                        labelText: 'Senha:',
-                                        labelStyle: TextStyle(color: Colors.black, fontSize: 18),
-                                        focusedBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: Colors.orangeAccent[200]
-                                            )
-                                        )
+                                        SizedBox(height: 10),
+                                        TextFormField(
+                                          controller: senha,
+                                          decoration: InputDecoration(
+                                            prefixIcon: Icon(Icons.lock, color: Colors.orangeAccent[200], size: 22),
+                                            hintText: 'Senha',
+                                            border: UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.orangeAccent[200]
+                                                )
+                                            ),
+                                          ),
+                                          obscureText: true,
+                                          validator: (value){
+                                            if(value.isEmpty){
+                                              return 'Campo de preenchimento obrigatório';
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                      ],
                                     ),
-                                    onChanged: (String input){
-                                      setState(() {
-                                        senha = input;
-                                      });
-                                    },
                                   ),
                                 ),
-                                Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
-                                    //child: botaoVerificaPermissao("Entrar", context, {'login' : login, 'senha' : senha})
-                                )
+                                ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        shape: new RoundedRectangleBorder(
+                                          borderRadius: new BorderRadius.circular(30.0),
+                                        ),
+                                        minimumSize: Size(150, 5),
+                                        primary: Colors.orangeAccent[200],
+                                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                        textStyle: TextStyle(
+                                            fontSize: 18,
+                                            color: Colors.black54
+                                        )),
+                                    child: Text('Entrar'),
+                                    onPressed: () async{
+                                      if(form.currentState.validate()) {
+                                        await FirebaseFirestore.instance.collection('usuarios')
+                                            .add({
+                                          'login': login.text,
+                                          'senha': senha.text
+                                        });
+                                      }
+                                      Navigator.pushNamed(context, '/login');
+                                    }
+                                ),
 
                               ]
                           )

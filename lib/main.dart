@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
                       children: <Widget>[
                         Padding(
                           padding: EdgeInsets.fromLTRB(0,10,0,10),
-                          child: botaoGenerico("Entrar", context, "/home"),
+                          child: botaoGenerico("Entrar", context, "/login"),
                         ),
                         botaoGenerico("Cadastrar", context, "/cadastrar")
                       ]

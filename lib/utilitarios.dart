@@ -180,3 +180,92 @@ modalCreate(BuildContext context, String op, QueryDocumentSnapshot<Object> doc){
       }
   );
 }
+
+createUser(BuildContext context, String op, QueryDocumentSnapshot<Object> doc){
+  var form = GlobalKey<FormState>();
+
+  var login = TextEditingController();
+  var senha = TextEditingController();
+
+  return showDialog(
+      context: context,
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: Text('Novo Usuário'),
+          content: Form(
+            key: form,
+            child: Container(
+              height: MediaQuery.of(context).size.height/3,
+              child: Column(
+                children: <Widget>[
+                  TextFormField(
+                    controller: login,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.person, color: Colors.orangeAccent[200], size: 22),
+                      hintText: 'Login',
+                      border: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Colors.orangeAccent[200]
+                          )
+                      ),
+                    ),
+                    validator: (value){
+                      if(value.isEmpty){
+                        return 'Campo de preenchimento obrigatório';
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 10),
+                  TextFormField(
+                    controller: senha,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.lock, color: Colors.orangeAccent[200], size: 22),
+                      hintText: 'Senha',
+                      border: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Colors.orangeAccent[200]
+                          )
+                      ),
+                    ),
+                    validator: (value){
+                      if(value.isEmpty){
+                        return 'Campo de preenchimento obrigatório';
+                      }
+                      return null;
+                    },
+                  ),
+
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                style: TextButton.styleFrom(
+                  primary: Colors.orangeAccent[200],
+                ),
+                child: Text('Cancelar')
+            ),
+            TextButton(
+                onPressed: () async{
+                  if(form.currentState.validate()) {
+                    await FirebaseFirestore.instance.collection('usuarios')
+                        .add({
+                      'login': login.text,
+                      'senha': senha.text
+                    });
+                  }
+                  Navigator.of(context).pop();
+                },
+                style: TextButton.styleFrom(
+                  primary: Colors.orangeAccent[200],
+                ),
+                child: Text('Criar')
+            )
+          ],
+        );
+      }
+  );
+}
