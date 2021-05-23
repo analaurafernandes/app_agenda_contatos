@@ -9,7 +9,7 @@ botaoGenerico(texto, BuildContext context, rota){
             borderRadius: new BorderRadius.circular(30.0),
           ),
           minimumSize: Size(150, 5),
-          primary: Colors.orangeAccent[200],
+          primary: Colors.red[800],
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           textStyle: TextStyle(
               fontSize: 18,
@@ -48,7 +48,7 @@ modalCreate(BuildContext context, String op, QueryDocumentSnapshot<Object> doc){
                       hintText: 'Nome',
                       border: UnderlineInputBorder(
                         borderSide: BorderSide(
-                            color: Colors.orangeAccent[200]
+                            color: Colors.red[800]
                         )
                       ),
                     ),
@@ -66,7 +66,7 @@ modalCreate(BuildContext context, String op, QueryDocumentSnapshot<Object> doc){
                       hintText: 'Telefone',
                       border: UnderlineInputBorder(
                           borderSide: BorderSide(
-                              color: Colors.orangeAccent[200]
+                              color: Colors.red[800]
                           )
                       ),
                     ),
@@ -84,7 +84,7 @@ modalCreate(BuildContext context, String op, QueryDocumentSnapshot<Object> doc){
                       hintText: 'E-mail',
                       border: UnderlineInputBorder(
                           borderSide: BorderSide(
-                              color: Colors.orangeAccent[200]
+                              color: Colors.red[800]
                           )
                       ),
                     ),
@@ -102,7 +102,7 @@ modalCreate(BuildContext context, String op, QueryDocumentSnapshot<Object> doc){
                       hintText: 'Endereço',
                       border: UnderlineInputBorder(
                           borderSide: BorderSide(
-                              color: Colors.orangeAccent[200]
+                              color: Colors.red[800]
                           )
                       ),
                     ),
@@ -120,7 +120,7 @@ modalCreate(BuildContext context, String op, QueryDocumentSnapshot<Object> doc){
                       hintText: 'CEP',
                       border: UnderlineInputBorder(
                           borderSide: BorderSide(
-                              color: Colors.orangeAccent[200]
+                              color: Colors.red[800]
                           )
                       ),
                     ),
@@ -139,7 +139,7 @@ modalCreate(BuildContext context, String op, QueryDocumentSnapshot<Object> doc){
             TextButton(
                 onPressed: () => Navigator.of(context).pop(),
                 style: TextButton.styleFrom(
-                  primary: Colors.orangeAccent[200],
+                  primary: Colors.red[800],
                 ),
                 child: Text('Cancelar')
             ),
@@ -172,7 +172,7 @@ modalCreate(BuildContext context, String op, QueryDocumentSnapshot<Object> doc){
                   Navigator.of(context).pop();
                 },
                 style: TextButton.styleFrom(
-                  primary: Colors.orangeAccent[200],
+                  primary: Colors.red[800],
                 ),
                 child: Text('Salvar')
             )
@@ -203,11 +203,11 @@ createUser(BuildContext context, String op, QueryDocumentSnapshot<Object> doc){
                   TextFormField(
                     controller: email,
                     decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.email, color: Colors.orangeAccent[200], size: 22),
+                      prefixIcon: Icon(Icons.email, color: Colors.red[800], size: 22),
                       hintText: 'E-mail',
                       border: UnderlineInputBorder(
                           borderSide: BorderSide(
-                              color: Colors.orangeAccent[200]
+                              color: Colors.red[800]
                           )
                       ),
                     ),
@@ -221,11 +221,11 @@ createUser(BuildContext context, String op, QueryDocumentSnapshot<Object> doc){
                   TextFormField(
                     controller: login,
                     decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.person, color: Colors.orangeAccent[200], size: 22),
+                      prefixIcon: Icon(Icons.person, color: Colors.red[800], size: 22),
                       hintText: 'Login',
                       border: UnderlineInputBorder(
                           borderSide: BorderSide(
-                              color: Colors.orangeAccent[200]
+                              color: Colors.red[800]
                           )
                       ),
                     ),
@@ -240,11 +240,11 @@ createUser(BuildContext context, String op, QueryDocumentSnapshot<Object> doc){
                   TextFormField(
                     controller: senha,
                     decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.lock, color: Colors.orangeAccent[200], size: 22),
+                      prefixIcon: Icon(Icons.lock, color: Colors.red[800], size: 22),
                       hintText: 'Senha',
                       border: UnderlineInputBorder(
                           borderSide: BorderSide(
-                              color: Colors.orangeAccent[200]
+                              color: Colors.red[800]
                           )
                       ),
                     ),
@@ -264,7 +264,7 @@ createUser(BuildContext context, String op, QueryDocumentSnapshot<Object> doc){
             TextButton(
                 onPressed: () => Navigator.of(context).pop(),
                 style: TextButton.styleFrom(
-                  primary: Colors.orangeAccent[200],
+                  primary: Colors.red[800],
                 ),
                 child: Text('Cancelar')
             ),
@@ -294,7 +294,7 @@ createUser(BuildContext context, String op, QueryDocumentSnapshot<Object> doc){
                   Navigator.of(context).pop();
                 },
                 style: TextButton.styleFrom(
-                  primary: Colors.orangeAccent[200],
+                  primary: Colors.red[800],
                 ),
                 child: Text('Criar')
             )

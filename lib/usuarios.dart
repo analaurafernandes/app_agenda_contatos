@@ -27,7 +27,7 @@ class _Users extends State<Users> {
           controller: buscado,
           decoration: InputDecoration(
             prefixIcon: IconButton(
-              icon: Icon(Icons.remove_circle_outline, color: Colors.orangeAccent[200], size: 18),
+              icon: Icon(Icons.remove_circle_outline, color: Colors.red[800], size: 18),
               onPressed: () {
                 setState((){
                   conteudo = null;
@@ -37,7 +37,7 @@ class _Users extends State<Users> {
               },
             ),
             hintText: "Busque pelo nome de login...",
-            hintStyle: TextStyle(color: Colors.orangeAccent[200])
+            hintStyle: TextStyle(color: Colors.red[800])
           ),
           onChanged: (text){
                 busca = text;
@@ -48,7 +48,7 @@ class _Users extends State<Users> {
           }
         ),
         elevation: 0,
-        iconTheme: IconThemeData(color: Colors.orangeAccent[200]),
+        iconTheme: IconThemeData(color: Colors.red[800]),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),

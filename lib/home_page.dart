@@ -20,7 +20,7 @@ class _Home extends State<Home> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          iconTheme: IconThemeData(color: Colors.orangeAccent[200]),
+          iconTheme: IconThemeData(color: Colors.red[800]),
           actions: <Widget>[
             PopupMenuButton(
                 onSelected: (result){

@@ -23,7 +23,7 @@ class _TelaCadastro extends State<TelaCadastro> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          iconTheme: IconThemeData(color: Colors.orangeAccent[200]),
+          iconTheme: IconThemeData(color: Colors.red[800]),
           actions: <Widget>[
             PopupMenuButton(
                 onSelected: (result){
@@ -91,11 +91,11 @@ class _TelaCadastro extends State<TelaCadastro> {
                                         TextFormField(
                                           controller: email,
                                           decoration: InputDecoration(
-                                            prefixIcon: Icon(Icons.email, color: Colors.orangeAccent[200], size: 22),
+                                            prefixIcon: Icon(Icons.email, color: Colors.red[800], size: 22),
                                             hintText: 'E-mail',
                                             border: UnderlineInputBorder(
                                                 borderSide: BorderSide(
-                                                    color: Colors.orangeAccent[200]
+                                                    color: Colors.red[800]
                                                 )
                                             ),
                                           ),
@@ -109,11 +109,11 @@ class _TelaCadastro extends State<TelaCadastro> {
                                         TextFormField(
                                           controller: login,
                                           decoration: InputDecoration(
-                                            prefixIcon: Icon(Icons.person, color: Colors.orangeAccent[200], size: 22),
+                                            prefixIcon: Icon(Icons.person, color: Colors.red[800], size: 22),
                                             hintText: 'Login',
                                             border: UnderlineInputBorder(
                                                 borderSide: BorderSide(
-                                                    color: Colors.orangeAccent[200]
+                                                    color: Colors.red[800]
                                                 )
                                             ),
                                           ),
@@ -128,11 +128,11 @@ class _TelaCadastro extends State<TelaCadastro> {
                                         TextFormField(
                                           controller: senha,
                                           decoration: InputDecoration(
-                                            prefixIcon: Icon(Icons.lock, color: Colors.orangeAccent[200], size: 22),
+                                            prefixIcon: Icon(Icons.lock, color: Colors.red[800], size: 22),
                                             hintText: 'Senha',
                                             border: UnderlineInputBorder(
                                                 borderSide: BorderSide(
-                                                    color: Colors.orangeAccent[200]
+                                                    color: Colors.red[800]
                                                 )
                                             ),
                                           ),
@@ -153,7 +153,7 @@ class _TelaCadastro extends State<TelaCadastro> {
                                     borderRadius: new BorderRadius.circular(30.0),
                                   ),
                                   minimumSize: Size(150, 5),
-                                  primary: Colors.orangeAccent[200],
+                                  primary: Colors.red[800],
                                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                                   textStyle: TextStyle(
                                     fontSize: 18,

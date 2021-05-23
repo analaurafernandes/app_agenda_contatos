@@ -30,7 +30,7 @@ class _MyAppState extends State<MyApp>{
           "/home": (context) => Home(),
           "/users": (context) => Users()
         },
-        theme: ThemeData(primaryColor: Colors.orangeAccent[200]),
+        theme: ThemeData(primaryColor: Colors.red[800]),
         home: HomePage()
     );
   }
