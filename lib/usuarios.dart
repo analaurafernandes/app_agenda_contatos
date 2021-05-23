@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'utilitarios.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 class Users extends StatefulWidget {
@@ -9,17 +10,82 @@ class Users extends StatefulWidget {
 }
 
 class _Users extends State<Users> {
+  /*Future filtrar(String buscar) async{
+    if(buscar != ''){
+      if(buscar.length == 20){
+        //itens = await FirebaseFirestore.instance.doc('/usuarios/${buscar}').get();
+      }
+      else{
+        return FirebaseFirestore.instance.collection('usuarios').where('login', isEqualTo: buscar).snapshots();
+      }
+
+      //print(Map.of(itens.data()));
+    }
+    else{
+      return FirebaseFirestore.instance.collection('usuarios').where('status', isEqualTo: 'ativo').orderBy('login').snapshots();
+    }
+  }*/
+  var busca = '';
+  var campo = '';
+  var conteudo = null;
   @override
   Widget build(BuildContext context){
     var snapshots = FirebaseFirestore.instance.collection('usuarios').where('status', isEqualTo: 'ativo').orderBy('login').snapshots();
+    bool searchState = false;
+    GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+    var buscado = TextEditingController();
 
+    print("reiniciei tudo");
+    /*showSearch(
+      context: context,
+      delegate: CustomSearchDelegate(),
+    );*/
     return Scaffold(
+      key: _scaffoldKey,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        title: TextField(
+          controller: buscado,
+          decoration: InputDecoration(
+            hintText: "Busque pelo id ou pelo nome...",
+            hintStyle: TextStyle(color: Colors.orangeAccent[200])
+          ),
+          onChanged: (text){
+                busca = text;
+                if(busca.length == 20)
+                  campo = 'uid';
+                else
+                  campo = 'login';
+
+
+          }
+        ),
         elevation: 0,
         iconTheme: IconThemeData(color: Colors.orangeAccent[200]),
         actions: <Widget>[
+          /*!searchState ? IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              //setState((){
+                searchState = !searchState;
+                print(searchState);
+              //});
+            },
+          ) :*/
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              setState((){
+                conteudo = _fireSearch(busca, campo);
+                print(busca + ' ' + campo);
+              });
+
+
+              //filtrar(busca);
+
+            },
+          ),
           PopupMenuButton(
               onSelected: (result){
                 if (result == 0) {
@@ -42,7 +108,50 @@ class _Users extends State<Users> {
         ],
       ),
       backgroundColor: Colors.grey[100],
-      body: StreamBuilder(
+      body: conteudo == null ? conteudo : _fireSearch(busca, campo),
+    );
+  }
+
+  Widget _fireSearch(String queryText, String campo) {
+    if(queryText == ''){
+      queryText = 'ativo';
+      campo = 'status';
+    }
+    print("PASSEI AQUI " + queryText + ' ' + campo);
+    return new StreamBuilder(
+      stream: FirebaseFirestore.instance
+          .collection('usuarios')
+          .where(campo, isEqualTo: queryText)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return new Text('Loading...');
+        return new ListView.builder(
+          itemCount: snapshot.data.docs.length,
+          itemBuilder: (context, index) =>
+              _buildListItem(Map.of(snapshot.data.docs[index].data())),
+        );
+      },
+    );
+  }
+
+  Widget _buildListItem(Map document) {
+    print("ENTREI");
+    print(document);
+    return new ListTile(
+      title: Text(document['login']),
+      subtitle: Text(document['email']),
+    );
+  }
+}
+
+
+
+
+
+
+
+
+    /*StreamBuilder(
         stream: snapshots,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
           if (snapshot.hasError){
@@ -96,6 +205,4 @@ class _Users extends State<Users> {
         tooltip: 'Adicionar novo',
         child: Icon(Icons.add),
       ),*/
-    );
-  }
-}
+    );*/

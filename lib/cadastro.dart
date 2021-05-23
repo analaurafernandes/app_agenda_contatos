@@ -143,12 +143,12 @@ class _TelaCadastro extends State<TelaCadastro> {
                                   onPressed: () async{
                                     if(form.currentState.validate()) {
                                       await FirebaseFirestore.instance.collection('usuarios')
-                                          .add({
-                                        'login': login.text,
-                                        'senha': senha.text,
-                                        'email': email.text,
-                                        'status': 'ativo'
-                                      });
+                                        .add({
+                                          'login': login.text,
+                                          'senha': senha.text,
+                                          'email': email.text,
+                                          'status': 'ativo'
+                                        });
                                       UserCredential user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email.text, password: senha.text);
                                     }
                                     Navigator.pushNamed(context, '/login');
