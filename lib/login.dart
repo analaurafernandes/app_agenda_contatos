@@ -1,10 +1,9 @@
 import 'package:agenda_contatos/usuarios.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'usuarios.dart';
-import 'utilitarios.dart';
-//import 'package:sqflite/sqflite.dart';
+import 'cadastro.dart';
+
 
 class TelaLogin extends StatefulWidget {
   @override
@@ -27,24 +26,43 @@ class _TelaLogin extends State<TelaLogin> {
           iconTheme: IconThemeData(color: Colors.orangeAccent[200]),
           actions: <Widget>[
             PopupMenuButton(
-              onSelected: (result){
-                print(result);
-                if (result == 0) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Users()),
-                  );
+                onSelected: (result){
+                  if (result == 0) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Users()),
+                    );
+                  }
+                  else if(result == 1){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => TelaCadastro()),
+                    );
+                  }
+                  else if(result == 2){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => TelaLogin()),
+                    );
+                  }
+                },
+                itemBuilder: (BuildContext context){
+                  return [
+                    PopupMenuItem(
+                      child: Text('Usuários'),
+                      value: 0,
+                    ),
+                    PopupMenuItem(
+                      child: Text('Cadastro'),
+                      value: 1,
+                    ),
+                    PopupMenuItem(
+                      child: Text('Login'),
+                      value: 2,
+                    ),
+                    //PopupMenuItem(child: Text('Android')),
+                  ];
                 }
-              },
-              itemBuilder: (BuildContext context){
-                return [
-                  PopupMenuItem(
-                    child: Text('Usuários'),
-                    value: 0,
-                  ),
-                  //PopupMenuItem(child: Text('Android')),
-                ];
-              }
             ),
           ],
         ),

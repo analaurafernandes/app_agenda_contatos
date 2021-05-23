@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'utilitarios.dart';
 import 'usuarios.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'login.dart';
+import 'cadastro.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -29,12 +30,32 @@ class _Home extends State<Home> {
                       MaterialPageRoute(builder: (context) => Users()),
                     );
                   }
+                  else if(result == 1){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => TelaCadastro()),
+                    );
+                  }
+                  else if(result == 2){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => TelaLogin()),
+                    );
+                  }
                 },
                 itemBuilder: (BuildContext context){
                   return [
                     PopupMenuItem(
                       child: Text('Usuários'),
                       value: 0,
+                    ),
+                    PopupMenuItem(
+                      child: Text('Cadastro'),
+                      value: 1,
+                    ),
+                    PopupMenuItem(
+                      child: Text('Login'),
+                      value: 2,
                     ),
                     //PopupMenuItem(child: Text('Android')),
                   ];

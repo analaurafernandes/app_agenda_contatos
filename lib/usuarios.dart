@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'utilitarios.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'login.dart';
+import 'cadastro.dart';
+import 'home_page.dart';
 
 class Users extends StatefulWidget {
   @override
@@ -10,21 +11,6 @@ class Users extends StatefulWidget {
 }
 
 class _Users extends State<Users> {
-  /*Future filtrar(String buscar) async{
-    if(buscar != ''){
-      if(buscar.length == 20){
-        //itens = await FirebaseFirestore.instance.doc('/usuarios/${buscar}').get();
-      }
-      else{
-        return FirebaseFirestore.instance.collection('usuarios').where('login', isEqualTo: buscar).snapshots();
-      }
-
-      //print(Map.of(itens.data()));
-    }
-    else{
-      return FirebaseFirestore.instance.collection('usuarios').where('status', isEqualTo: 'ativo').orderBy('login').snapshots();
-    }
-  }*/
   var busca = '';
   var campo = '';
   var conteudo = null;
@@ -41,7 +27,18 @@ class _Users extends State<Users> {
         title: TextField(
           controller: buscado,
           decoration: InputDecoration(
-            hintText: "Busque pelo id ou pelo nome...",
+            prefixIcon: IconButton(
+              icon: Icon(Icons.remove_circle_outline, color: Colors.orangeAccent[200], size: 18),
+              onPressed: () {
+                setState((){
+                  conteudo = null;
+                  busca = '';
+                  campo = '';
+                  print(busca + ' ' + campo);
+                });
+              },
+            ),
+            hintText: "Busque pelo nome de login...",
             hintStyle: TextStyle(color: Colors.orangeAccent[200])
           ),
           onChanged: (text){
@@ -50,8 +47,6 @@ class _Users extends State<Users> {
                   campo = 'uid';
                 else
                   campo = 'login';
-
-
           }
         ),
         elevation: 0,
@@ -74,12 +69,32 @@ class _Users extends State<Users> {
                     MaterialPageRoute(builder: (context) => Users()),
                   );
                 }
+                else if(result == 1){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TelaCadastro()),
+                  );
+                }
+                else if(result == 2){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TelaLogin()),
+                  );
+                }
               },
               itemBuilder: (BuildContext context){
                 return [
                   PopupMenuItem(
                     child: Text('Usuários'),
                     value: 0,
+                  ),
+                  PopupMenuItem(
+                    child: Text('Cadastro'),
+                    value: 1,
+                  ),
+                  PopupMenuItem(
+                    child: Text('Login'),
+                    value: 2,
                   ),
                   //PopupMenuItem(child: Text('Android')),
                 ];
@@ -127,8 +142,11 @@ class _Users extends State<Users> {
           trailing: IconButton(
             icon: Icon(Icons.delete),
             color: Colors.red[300],
-            onPressed: () => doc.reference.update({'status': 'excluido'}),
-          )
+            onPressed: (){
+              doc.reference.update({'status': 'excluido'});
+              Navigator.of(context).pop();
+            },
+          ),
         );
   }
 }
