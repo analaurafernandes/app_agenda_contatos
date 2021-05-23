@@ -30,16 +30,9 @@ class _Users extends State<Users> {
   var conteudo = null;
   @override
   Widget build(BuildContext context){
-    var snapshots = FirebaseFirestore.instance.collection('usuarios').where('status', isEqualTo: 'ativo').orderBy('login').snapshots();
-    bool searchState = false;
     GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
     var buscado = TextEditingController();
 
-    print("reiniciei tudo");
-    /*showSearch(
-      context: context,
-      delegate: CustomSearchDelegate(),
-    );*/
     return Scaffold(
       key: _scaffoldKey,
       extendBodyBehindAppBar: true,
@@ -64,15 +57,6 @@ class _Users extends State<Users> {
         elevation: 0,
         iconTheme: IconThemeData(color: Colors.orangeAccent[200]),
         actions: <Widget>[
-          /*!searchState ? IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {
-              //setState((){
-                searchState = !searchState;
-                print(searchState);
-              //});
-            },
-          ) :*/
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
@@ -80,10 +64,6 @@ class _Users extends State<Users> {
                 conteudo = _fireSearch(busca, campo);
                 print(busca + ' ' + campo);
               });
-
-
-              //filtrar(busca);
-
             },
           ),
           PopupMenuButton(
@@ -108,7 +88,7 @@ class _Users extends State<Users> {
         ],
       ),
       backgroundColor: Colors.grey[100],
-      body: conteudo == null ? conteudo : _fireSearch(busca, campo),
+      body: conteudo == null ? _fireSearch('', '') : conteudo,
     );
   }
 
@@ -117,7 +97,6 @@ class _Users extends State<Users> {
       queryText = 'ativo';
       campo = 'status';
     }
-    print("PASSEI AQUI " + queryText + ' ' + campo);
     return new StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection('usuarios')
@@ -128,19 +107,29 @@ class _Users extends State<Users> {
         return new ListView.builder(
           itemCount: snapshot.data.docs.length,
           itemBuilder: (context, index) =>
-              _buildListItem(Map.of(snapshot.data.docs[index].data())),
+            _buildListItem(Map.of(snapshot.data.docs[index].data()), snapshot.data.docs[index])
+
         );
       },
     );
   }
 
-  Widget _buildListItem(Map document) {
-    print("ENTREI");
+  Widget _buildListItem(Map document, var doc) {
     print(document);
-    return new ListTile(
-      title: Text(document['login']),
-      subtitle: Text(document['email']),
-    );
+    print(doc);
+    return ListTile(
+          leading: IconButton(
+            icon: Icon(Icons.edit_outlined),
+            onPressed: () => createUser(context, 'edit', doc),
+          ),
+          title: Text(document['login']),
+          subtitle: Text(document['email']),
+          trailing: IconButton(
+            icon: Icon(Icons.delete),
+            color: Colors.red[300],
+            onPressed: () => doc.reference.update({'status': 'excluido'}),
+          )
+        );
   }
 }
 
