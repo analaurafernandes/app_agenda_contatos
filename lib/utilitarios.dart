@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-
+import 'package:intl/intl.dart';
 _recuperaCep(String cep) async{
   String url = "https://viacep.com.br/ws/${cep}/json/";
   http.Response response;
@@ -301,9 +301,11 @@ createUser(BuildContext context, String op, QueryDocumentSnapshot<Object> doc){
 
 modalCreateCalendar(BuildContext context, String op, QueryDocumentSnapshot<Object> doc){
   var form = GlobalKey<FormState>();
-  var dataInicio = TextEditingController();
-  var dataFim = TextEditingController();
-
+  DateTime dataInicio = DateTime.now();
+  DateTime dataFim = DateTime.now().add(Duration(days: 1));
+  var strInicio;
+  var strFim;
+  TextEditingController _nomeEvento = TextEditingController();
   return showDialog(
       context: context,
       builder: (BuildContext context){
@@ -312,42 +314,63 @@ modalCreateCalendar(BuildContext context, String op, QueryDocumentSnapshot<Objec
           content: Form(
             key: form,
             child: Container(
-              height: MediaQuery.of(context).size.height/2,
+              height: MediaQuery.of(context).size.height/3,
               child: Column(
                 children: <Widget>[
-                  TextButton(
-                  onPressed: () {
-                    DatePicker.showDatePicker(context,
-                      showTitleActions: true,
-                      minTime: DateTime(2021, 1, 1),
-                      maxTime: DateTime(2021, 12, 31), onChanged: (date) {
-                      print('change $date');
-                      }, onConfirm: (date) {
-                      print('confirm $date');
-                      }, currentTime: DateTime.now(), locale: LocaleType.en);
-                    },
-                    child: Text(
-                      'Data de Início',
-                      style: TextStyle(color: Colors.blue),
-                    )
-                  ),
-                  TextButton(
-                      onPressed: () {
-                        DatePicker.showDatePicker(context,
+                  Row(
+                    children: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          DatePicker.showDateTimePicker(context,
                             showTitleActions: true,
                             minTime: DateTime(2021, 1, 1),
                             maxTime: DateTime(2021, 12, 31), onChanged: (date) {
-                              print('change $date');
+                            print('change $date');
                             }, onConfirm: (date) {
-                              print('confirm $date');
+                                dataInicio = date;
+
+                                print(dataInicio);
                             }, currentTime: DateTime.now(), locale: LocaleType.en);
-                      },
-                      child: Text(
-                        'Data de Fim',
-                        style: TextStyle(color: Colors.blue),
-                      )
+                        },
+                        child: Text(
+                          'Início',
+                          style: TextStyle(color: Colors.blue),
+                        )
+                      ),
+                      Text('${DateFormat("dd/MM/yyyy hh:mm").format(dataInicio)}'),
+                    ],
                   ),
-                  TextFormField(
+                  Row(
+                    children: <Widget>[
+                      TextButton(
+                          onPressed: () {
+                            DatePicker.showDateTimePicker(context,
+                                showTitleActions: true,
+                                minTime: DateTime(2021, 1, 1),
+                                maxTime: DateTime(2030, 12, 31), onChanged: (date) {
+                                  print('change $date');
+                                }, onConfirm: (date) {
+
+                                    dataFim = date;
+                                    print(dataFim);
+                                }, currentTime: DateTime.now(), locale: LocaleType.en);
+                          },
+                          child: Text(
+                            'Fim',
+                            style: TextStyle(color: Colors.blue),
+                          )
+                      ),
+                      Text('${DateFormat("dd/MM/yyyy hh:mm").format(dataInicio)}'),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                    child: TextField(
+                      controller: _nomeEvento,
+                      decoration: InputDecoration(hintText: 'Insira o nome do evento'),
+                    ),
+                  ),
+                  /*TextFormField(
                     controller: dataInicio,
                     decoration: InputDecoration(
                       hintText: 'Início',
@@ -381,7 +404,7 @@ modalCreateCalendar(BuildContext context, String op, QueryDocumentSnapshot<Objec
                       }
                       return null;
                     },
-                  ),
+                  ),*/
                 ],
               ),
             ),
