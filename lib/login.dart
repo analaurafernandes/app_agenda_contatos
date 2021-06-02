@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'usuarios.dart';
 import 'cadastro.dart';
-
+import 'package:http/http.dart' as http;
 
 class TelaLogin extends StatefulWidget {
   @override

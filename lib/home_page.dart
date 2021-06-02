@@ -4,13 +4,21 @@ import 'utilitarios.dart';
 import 'usuarios.dart';
 import 'login.dart';
 import 'cadastro.dart';
-
+import 'package:http/http.dart' as http;
 class Home extends StatefulWidget {
   @override
   _Home createState() => _Home();
 }
 
 class _Home extends State<Home> {
+  _recuperaCep(String CEP) async{
+    String cep = CEP;
+    String url = "https://viacep.com.br/ws/${cep}/json/";
+    http.Response response;
+    response = await http.get(Uri.parse(url));
+    print("Resposta: " + response.body);
+  }
+
   @override
   Widget build(BuildContext context){
     var snapshots = FirebaseFirestore.instance.collection('contatos').where('status', isEqualTo: 'ativo').orderBy('nome').snapshots();

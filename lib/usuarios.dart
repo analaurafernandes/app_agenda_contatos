@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'utilitarios.dart';
 import 'login.dart';
 import 'cadastro.dart';
-
+import 'package:http/http.dart' as http;
 class Users extends StatefulWidget {
   @override
   _Users createState() => _Users();
@@ -13,6 +13,14 @@ class _Users extends State<Users> {
   var busca = '';
   var campo = '';
   var conteudo = null;
+  _recuperaCep(String CEP) async{
+    String cep = CEP;
+    String url = "https://viacep.com.br/ws/${cep}/json/";
+    http.Response response;
+    response = await http.get(Uri.parse(url));
+    print("Resposta: " + response.body);
+  }
+
   @override
   Widget build(BuildContext context){
     GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();

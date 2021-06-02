@@ -26,6 +26,7 @@ dependencies:
   cloud_firestore: ^2.0.0 #banco de dados
   firebase_core: ^1.1.0 #recursos basicos
   firebase_database: ^6.1.2
+  http: ^0.13.3
 
   flutter:
     sdk: flutter

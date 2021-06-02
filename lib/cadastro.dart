@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'usuarios.dart';
 import 'login.dart';
-
+import 'package:http/http.dart' as http;
 class TelaCadastro extends StatefulWidget {
   @override
   _TelaCadastro createState() => _TelaCadastro();
