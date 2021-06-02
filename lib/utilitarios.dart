@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 _recuperaCep(String cep) async{
   String url = "https://viacep.com.br/ws/${cep}/json/";
@@ -307,13 +308,45 @@ modalCreateCalendar(BuildContext context, String op, QueryDocumentSnapshot<Objec
       context: context,
       builder: (BuildContext context){
         return AlertDialog(
-          title: Text('Novo Contato'),
+          title: Text('Novo Evento'),
           content: Form(
             key: form,
             child: Container(
               height: MediaQuery.of(context).size.height/2,
               child: Column(
                 children: <Widget>[
+                  TextButton(
+                  onPressed: () {
+                    DatePicker.showDatePicker(context,
+                      showTitleActions: true,
+                      minTime: DateTime(2021, 1, 1),
+                      maxTime: DateTime(2021, 12, 31), onChanged: (date) {
+                      print('change $date');
+                      }, onConfirm: (date) {
+                      print('confirm $date');
+                      }, currentTime: DateTime.now(), locale: LocaleType.en);
+                    },
+                    child: Text(
+                      'Data de Início',
+                      style: TextStyle(color: Colors.blue),
+                    )
+                  ),
+                  TextButton(
+                      onPressed: () {
+                        DatePicker.showDatePicker(context,
+                            showTitleActions: true,
+                            minTime: DateTime(2021, 1, 1),
+                            maxTime: DateTime(2021, 12, 31), onChanged: (date) {
+                              print('change $date');
+                            }, onConfirm: (date) {
+                              print('confirm $date');
+                            }, currentTime: DateTime.now(), locale: LocaleType.en);
+                      },
+                      child: Text(
+                        'Data de Fim',
+                        style: TextStyle(color: Colors.blue),
+                      )
+                  ),
                   TextFormField(
                     controller: dataInicio,
                     decoration: InputDecoration(
