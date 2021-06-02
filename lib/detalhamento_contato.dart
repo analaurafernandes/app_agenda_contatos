@@ -30,6 +30,7 @@ class _Detalhamento extends State<Detalhamento> {
   }
 
   Future _getImage() async{
+    print("ENTREI");
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
@@ -121,9 +122,7 @@ class _Detalhamento extends State<Detalhamento> {
                 Row(
                   children: <Widget>[
                     GestureDetector(
-                      onTap: (){
-                        print("PLIN!");
-                      },
+                      onTap: _getImage,
                       child: Container(
                           decoration: BoxDecoration(
                               color: Colors.black12,
@@ -132,7 +131,7 @@ class _Detalhamento extends State<Detalhamento> {
                           height: MediaQuery.of(context).copyWith().size.height / 8,
                           width: MediaQuery.of(context).copyWith().size.height / 8,
                           //color: Colors.black12,
-                          child: Icon(Icons.add)
+                          child: _image == null ? Icon(Icons.add) : Image.file(_image)
                       ),
                       ),
                       Expanded(

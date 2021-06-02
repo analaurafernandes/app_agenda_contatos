@@ -105,7 +105,7 @@ class _Home extends State<Home> {
                       //spacing: 2,
                       children: <Widget>[
                         IconButton(
-                          icon: Icon(Icons.pageview),
+                          icon: Icon(Icons.account_circle),
                           onPressed: () => Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => Detalhamento(id: item['nome'])),
