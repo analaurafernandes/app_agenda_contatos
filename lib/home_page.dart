@@ -132,6 +132,7 @@ class _Home extends State<Home> {
           onPressed: () => modalCreate(context, 'add', null),
           tooltip: 'Adicionar novo',
           child: Icon(Icons.add),
+          backgroundColor: Colors.red[800],
         ),
     );
   }

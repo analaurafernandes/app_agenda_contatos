@@ -13,12 +13,6 @@ class _Users extends State<Users> {
   var busca = '';
   var campo = '';
   var conteudo = null;
-  _recuperaCep(String cep) async{
-    String url = "https://viacep.com.br/ws/${cep}/json/";
-    http.Response response;
-    response = await http.get(Uri.parse(url));
-    print("Resposta: " + response.body);
-  }
 
   @override
   Widget build(BuildContext context){

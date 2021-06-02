@@ -194,6 +194,7 @@ class _Detalhamento extends State<Detalhamento> {
         onPressed: () => modalCreateCalendar(context, 'add', null),
         tooltip: 'Adicionar novo',
         child: Icon(Icons.event_available),
+        backgroundColor: Colors.red[800],
       ),
     );
   }
