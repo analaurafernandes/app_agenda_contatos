@@ -2,7 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
+_recuperaCep(String cep) async{
+  String url = "https://viacep.com.br/ws/${cep}/json/";
+  http.Response response;
+  response = await http.get(Uri.parse(url));
+  return response;
+}
 
 
 botaoGenerico(texto, BuildContext context, rota){
@@ -27,11 +34,9 @@ botaoGenerico(texto, BuildContext context, rota){
 
 modalCreate(BuildContext context, String op, QueryDocumentSnapshot<Object> doc){
   var form = GlobalKey<FormState>();
-
   var nome = TextEditingController();
   var email = TextEditingController();
   var telefone = TextEditingController();
-  var endereco = TextEditingController();
   var cep = TextEditingController();
 
   return showDialog(
@@ -100,24 +105,6 @@ modalCreate(BuildContext context, String op, QueryDocumentSnapshot<Object> doc){
                   ),
                   SizedBox(height: 10),
                   TextFormField(
-                    controller: endereco,
-                    decoration: InputDecoration(
-                      hintText: 'Endereço',
-                      border: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Colors.red[800]
-                          )
-                      ),
-                    ),
-                    validator: (value){
-                      if(value.isEmpty){
-                        return 'Campo de preenchimento obrigatório';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 10),
-                  TextFormField(
                     controller: cep,
                     decoration: InputDecoration(
                       hintText: 'CEP',
@@ -148,13 +135,17 @@ modalCreate(BuildContext context, String op, QueryDocumentSnapshot<Object> doc){
             ),
             TextButton(
                 onPressed: () async{
+                  var endereco = await _recuperaCep(cep.text);
+                  Map<String, dynamic> jsonEndereco = jsonDecode(endereco.body);
+                  endereco = "Logradouro: ${jsonEndereco['logradouro']} \n Bairro: ${jsonEndereco['bairro']} \n Localidade: ${jsonEndereco['localidade']}";
+                  print(jsonEndereco);
                   if(op == 'edit'){
                     if(form.currentState.validate())
                       doc.reference.update({
                         'cep': cep.text,
                         'nome': nome.text,
                         'email': email.text,
-                        'endereco': endereco.text,
+                        'endereco': endereco,
                         'telefone': telefone.text,
                         'status': 'ativo'
                       });
@@ -166,7 +157,7 @@ modalCreate(BuildContext context, String op, QueryDocumentSnapshot<Object> doc){
                         'cep': cep.text,
                         'nome': nome.text,
                         'email': email.text,
-                        'endereco': endereco.text,
+                        'endereco': endereco,
                         'telefone': telefone.text,
                         'status': 'ativo'
                       });
@@ -300,6 +291,112 @@ createUser(BuildContext context, String op, QueryDocumentSnapshot<Object> doc){
                   primary: Colors.red[800],
                 ),
                 child: Text('Criar')
+            )
+          ],
+        );
+      }
+  );
+}
+
+modalCreateCalendar(BuildContext context, String op, QueryDocumentSnapshot<Object> doc){
+  var form = GlobalKey<FormState>();
+  var dataInicio = TextEditingController();
+  var dataFim = TextEditingController();
+
+  return showDialog(
+      context: context,
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: Text('Novo Contato'),
+          content: Form(
+            key: form,
+            child: Container(
+              height: MediaQuery.of(context).size.height/2,
+              child: Column(
+                children: <Widget>[
+                  TextFormField(
+                    controller: dataInicio,
+                    decoration: InputDecoration(
+                      hintText: 'Início',
+                      border: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Colors.red[800]
+                          )
+                      ),
+                    ),
+                    validator: (value){
+                      if(value.isEmpty){
+                        return 'Campo de preenchimento obrigatório';
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 10),
+                  TextFormField(
+                    controller: dataFim,
+                    decoration: InputDecoration(
+                      hintText: 'Fim',
+                      border: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Colors.red[800]
+                          )
+                      ),
+                    ),
+                    validator: (value){
+                      if(value.isEmpty){
+                        return 'Campo de preenchimento obrigatório';
+                      }
+                      return null;
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                style: TextButton.styleFrom(
+                  primary: Colors.red[800],
+                ),
+                child: Text('Cancelar')
+            ),
+            TextButton(
+                onPressed: () async{
+                 /* var endereco = await _recuperaCep(cep.text);
+                  Map<String, dynamic> jsonEndereco = jsonDecode(endereco.body);
+                  endereco = "Logradouro: ${jsonEndereco['logradouro']} \n Bairro: ${jsonEndereco['bairro']} \n Localidade: ${jsonEndereco['localidade']}";
+                  print(jsonEndereco);
+                  if(op == 'edit'){
+                    if(form.currentState.validate())
+                      doc.reference.update({
+                        'cep': cep.text,
+                        'nome': nome.text,
+                        'email': email.text,
+                        'endereco': endereco,
+                        'telefone': telefone.text,
+                        'status': 'ativo'
+                      });
+                  }
+                  else{
+                    if(form.currentState.validate()) {
+                      await FirebaseFirestore.instance.collection('contatos')
+                          .add({
+                        'cep': cep.text,
+                        'nome': nome.text,
+                        'email': email.text,
+                        'endereco': endereco,
+                        'telefone': telefone.text,
+                        'status': 'ativo'
+                      });
+                    }
+                  }
+                  Navigator.of(context).pop();*/
+                },
+                style: TextButton.styleFrom(
+                  primary: Colors.red[800],
+                ),
+                child: Text('Salvar')
             )
           ],
         );

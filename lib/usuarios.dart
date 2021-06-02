@@ -13,8 +13,7 @@ class _Users extends State<Users> {
   var busca = '';
   var campo = '';
   var conteudo = null;
-  _recuperaCep(String CEP) async{
-    String cep = CEP;
+  _recuperaCep(String cep) async{
     String url = "https://viacep.com.br/ws/${cep}/json/";
     http.Response response;
     response = await http.get(Uri.parse(url));

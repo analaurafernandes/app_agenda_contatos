@@ -7,6 +7,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'usuarios.dart';
 import 'package:http/http.dart' as http;
+import 'detalhamento_contato.dart';
+
 void main() async{
     WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp();
@@ -28,7 +30,8 @@ class _MyAppState extends State<MyApp>{
           "/login":     (context) => TelaLogin(),
           "/cadastrar": (context) => TelaCadastro(),
           "/home": (context) => Home(),
-          "/users": (context) => Users()
+          "/users": (context) => Users(),
+          "/detalhamento": (context) => Detalhamento()
         },
         theme: ThemeData(primaryColor: Colors.red[800]),
         home: HomePage()

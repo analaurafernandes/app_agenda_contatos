@@ -5,19 +5,14 @@ import 'usuarios.dart';
 import 'login.dart';
 import 'cadastro.dart';
 import 'package:http/http.dart' as http;
+import 'detalhamento_contato.dart';
+
 class Home extends StatefulWidget {
   @override
   _Home createState() => _Home();
 }
 
 class _Home extends State<Home> {
-  _recuperaCep(String CEP) async{
-    String cep = CEP;
-    String url = "https://viacep.com.br/ws/${cep}/json/";
-    http.Response response;
-    response = await http.get(Uri.parse(url));
-    print("Resposta: " + response.body);
-  }
 
   @override
   Widget build(BuildContext context){
@@ -104,17 +99,29 @@ class _Home extends State<Home> {
                   ),
                   margin: const EdgeInsets.fromLTRB(10, 5, 10, 0),
                   child: ListTile(
-                    leading: IconButton(
-                      icon: Icon(Icons.edit_outlined),
-                      onPressed: () => modalCreate(context, 'edit', doc),
-                    ),
                     title: Text(item['nome']),
                     subtitle: Text(item['telefone'] + '\n' + item['email']),
-                    trailing: IconButton(
-                      icon: Icon(Icons.delete),
-                      color: Colors.red[300],
-                      onPressed: () => doc.reference.update({'status': 'excluido'}),
-                    )
+                    trailing: Wrap(
+                      //spacing: 2,
+                      children: <Widget>[
+                        IconButton(
+                          icon: Icon(Icons.pageview),
+                          onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Detalhamento(id: item['nome'])),
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.edit_outlined),
+                          onPressed: () => modalCreate(context, 'edit', doc),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.delete),
+                          color: Colors.red[300],
+                          onPressed: () => doc.reference.update({'status': 'excluido'}),
+                        ),
+                      ]
+                    ),
                   ),
                 );
               }
