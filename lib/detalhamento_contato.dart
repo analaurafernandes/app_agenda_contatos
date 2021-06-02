@@ -5,6 +5,7 @@ import 'usuarios.dart';
 import 'login.dart';
 import 'cadastro.dart';
 import 'package:http/http.dart' as http;
+import 'package:file_picker/file_picker.dart';
 
 class Detalhamento extends StatefulWidget {
   final String id;

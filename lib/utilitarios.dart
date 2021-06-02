@@ -5,6 +5,10 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
+import "package:googleapis_auth/auth_io.dart";
+import 'package:googleapis/calendar/v3.dart' hide Colors;
+import 'calendar.dart';
+
 _recuperaCep(String cep) async{
   String url = "https://viacep.com.br/ws/${cep}/json/";
   http.Response response;
@@ -303,8 +307,8 @@ modalCreateCalendar(BuildContext context, String op, QueryDocumentSnapshot<Objec
   var form = GlobalKey<FormState>();
   DateTime dataInicio = DateTime.now();
   DateTime dataFim = DateTime.now().add(Duration(days: 1));
-  var strInicio;
-  var strFim;
+  CalendarClient calendarClient = CalendarClient();
+
   TextEditingController _nomeEvento = TextEditingController();
   return showDialog(
       context: context,
@@ -418,36 +422,13 @@ modalCreateCalendar(BuildContext context, String op, QueryDocumentSnapshot<Objec
                 child: Text('Cancelar')
             ),
             TextButton(
-                onPressed: () async{
-                 /* var endereco = await _recuperaCep(cep.text);
-                  Map<String, dynamic> jsonEndereco = jsonDecode(endereco.body);
-                  endereco = "Logradouro: ${jsonEndereco['logradouro']} \n Bairro: ${jsonEndereco['bairro']} \n Localidade: ${jsonEndereco['localidade']}";
-                  print(jsonEndereco);
-                  if(op == 'edit'){
-                    if(form.currentState.validate())
-                      doc.reference.update({
-                        'cep': cep.text,
-                        'nome': nome.text,
-                        'email': email.text,
-                        'endereco': endereco,
-                        'telefone': telefone.text,
-                        'status': 'ativo'
-                      });
-                  }
-                  else{
-                    if(form.currentState.validate()) {
-                      await FirebaseFirestore.instance.collection('contatos')
-                          .add({
-                        'cep': cep.text,
-                        'nome': nome.text,
-                        'email': email.text,
-                        'endereco': endereco,
-                        'telefone': telefone.text,
-                        'status': 'ativo'
-                      });
-                    }
-                  }
-                  Navigator.of(context).pop();*/
+                onPressed: (){
+                  calendarClient.insert(
+                    _nomeEvento.text,
+                    dataInicio,
+                    dataFim,
+                  );
+                  Navigator.of(context).pop();
                 },
                 style: TextButton.styleFrom(
                   primary: Colors.red[800],
